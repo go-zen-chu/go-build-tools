@@ -1,7 +1,11 @@
-# golang-template
+# go-build-tools
 
-[![Documentation](https://pkg.go.dev/badge/github.com/go-zen-chu/golang-template)](http://pkg.go.dev/github.com/go-zen-chu/golang-template)
-[![Actions Status](https://github.com/go-zen-chu/golang-template/workflows/ci/badge.svg)](https://github.com/go-zen-chu/golang-template/actions)
-[![GitHub issues](https://img.shields.io/github/issues/go-zen-chu/golang-template.svg)](https://github.com/go-zen-chu/golang-template/issues)
+[![Documentation](https://pkg.go.dev/badge/github.com/go-zen-chu/go-build-tools)](http://pkg.go.dev/github.com/go-zen-chu/go-build-tools)
+[![Actions Status](https://github.com/go-zen-chu/go-build-tools/workflows/check-pr/badge.svg)](https://github.com/go-zen-chu/go-build-tools/actions)
+[![GitHub issues](https://img.shields.io/github/issues/go-zen-chu/go-build-tools.svg)](https://github.com/go-zen-chu/go-build-tools/issues)
 
-Github template repository for golang.
+Build tool repository written in Golang.
+
+## Goal
+
+- Use from [magefile](https://magefile.org/) and easily realize development
