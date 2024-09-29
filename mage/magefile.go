@@ -18,6 +18,9 @@ const imageRegistry = "amasuda"
 const repository = "go-build-tools"
 const dockerFileLocation = "."
 
+const tapOwner = "go-zen-chu"
+const tapRepo = "homebrew-tools"
+
 func init() {
 	// by default, magefile does not output stderr
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
@@ -107,5 +110,11 @@ end
 // UpdateFormula updates formula with current version for homebrew tap
 func UpdateFormula() error {
 	ft := fmt.Sprintf(formulaTemplate, currentVersion)
-	return gbt.GenerateFormula(ft, "go-zen-chu", "go-buold-tools", currentTagVersion)
+	return gbt.GenerateFormula(ft,
+		tapOwner,
+		tapRepo,
+		"go-zen-chu",
+		repository,
+		currentTagVersion,
+	)
 }

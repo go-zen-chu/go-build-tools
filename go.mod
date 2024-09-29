@@ -1,3 +1,3 @@
-module github.com/go-zen-chu/golang-template
+module github.com/go-zen-chu/go-build-tools
 
 go 1.23
