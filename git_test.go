@@ -17,6 +17,7 @@ func TestGetGitDiffFiles(t *testing.T) {
 		{
 			name: "If valid commit1 and commit2 given, return diff files",
 			args: args{
+				// this is a very first commit, so we should have diff
 				commit1: "0aedeb8",
 				commit2: "HEAD",
 			},
