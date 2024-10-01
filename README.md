@@ -24,3 +24,9 @@ Targets:
   koPublishLatest                 builds and publishes the image with the latest tag
   updateFormula                   updates formula with current version for homebrew tap
 ```
+
+## Test
+
+```console
+go test -v ./...
+```
