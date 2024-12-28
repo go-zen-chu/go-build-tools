@@ -1,9 +1,36 @@
 package gbt
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 )
+
+func Test_splitCmd(t *testing.T) {
+	tests := []struct {
+		name string
+		cmd  string
+		want []string
+	}{
+		{
+			name: "If valid command given, return split command",
+			cmd:  "echo \"hello world\"",
+			want: []string{"echo", "\"hello world\""},
+		},
+		{
+			name: "If valid command given, return split command",
+			cmd:  "/bin/bash -c \"$(curl -s https://some.endpoint)\"",
+			want: []string{"/bin/bash", "-c", "\"$(curl -s https://some.endpoint)\""},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := splitCmd(tt.cmd); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("splitCmd() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
 
 func TestRunCmdWithResult(t *testing.T) {
 	type args struct {

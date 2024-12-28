@@ -22,7 +22,8 @@ func splitCmd(cmd string) []string {
 		panic("could not split command with white space")
 	}
 	for i, m := range matches {
-		matches[i] = strings.Trim(m, `"'`)
+		// trim only when it has single quotes (double quotes are required when used in bash -c)
+		matches[i] = strings.Trim(m, `'`)
 	}
 	return matches
 }
