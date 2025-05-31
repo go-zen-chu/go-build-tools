@@ -12,6 +12,8 @@ import (
 type BrewFormula struct {
 	ChecksumSHA256DarwinArm64  string
 	ChecksumSHA256DarwinX86_64 string
+	ChecksumSHA256LinuxArm64   string
+	ChecksumSHA256LinuxX86_64  string
 }
 
 func fileOrDirExists(name string) bool {
@@ -53,6 +55,13 @@ func GenerateFormula(formulaTemplate, tapOwner, tapRepo, artifactOwner, artifact
 				bf.ChecksumSHA256DarwinArm64 = checksum
 			} else if strings.Contains(filename, "x86_64") {
 				bf.ChecksumSHA256DarwinX86_64 = checksum
+			}
+		}
+		if strings.Contains(filename, "Linux") {
+			if strings.Contains(filename, "arm64") {
+				bf.ChecksumSHA256DarwinArm64 = checksum // Reusing Darwin arm64 for Linux arm64
+			} else if strings.Contains(filename, "x86_64") {
+				bf.ChecksumSHA256DarwinX86_64 = checksum // Reusing Darwin x86_64 for Linux x86_64
 			}
 		}
 	}
