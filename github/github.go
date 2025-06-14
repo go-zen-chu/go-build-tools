@@ -1,11 +1,14 @@
-package gbt
+package github
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strings"
+
+	"github.com/go-zen-chu/go-build-tools/util"
 )
 
 type HTTPClient interface {
@@ -94,4 +97,48 @@ func GetChecksumMap(httpClient HTTPClient, release *GitHubRelease) (map[string]s
 		}
 	}
 	return checksumMap, nil
+}
+
+// GitAddAllCommitPush adds all changes, commits them with the provided message, and pushes to the remote repository.
+func GitAddAllCommitPush(repoDir, userName, userEmail, remoteURL, commitMessage string) error {
+	// DO NOT use single quote in commands, as it will not work with bash -c
+	commands := []string{
+		fmt.Sprintf("cd %s", repoDir),
+		fmt.Sprintf(`git config user.name "%s"`, userName),
+		fmt.Sprintf(`git config user.email "%s"`, userEmail),
+		"git add --all",
+		fmt.Sprintf(`git commit -m "%s"`, commitMessage),
+	}
+	if remoteURL != "" {
+		commands = append(commands,
+			fmt.Sprintf(`git remote set-url origin "%s"`, remoteURL),
+		)
+	}
+	commands = append(commands, "git push origin HEAD")
+
+	bashCommand := fmt.Sprintf(
+		"bash -c '%s'",
+		strings.Join(commands, " && "),
+	)
+	outMsg, errMsg, err := util.RunLongRunningCmdWithLog(bashCommand)
+	if err != nil {
+		return fmt.Errorf("git add, commit and push: %w\nstdout: %s\nstderr: %s", err, outMsg, errMsg)
+	}
+	return nil
+}
+
+func GitHubActionPush(repoDir, owner, repo, commitMessage string) error {
+	userName := "GitHub Action (by go-build-tools)"
+	userEmail := "aciton@github.com"
+
+	githubToken := os.Getenv("GITHUB_TOKEN")
+	if githubToken == "" {
+		return fmt.Errorf("GITHUB_TOKEN is not set")
+	}
+
+	remoteUrl := fmt.Sprintf("https://%s@github.com/%s/%s.git", githubToken, owner, repo)
+	if err := GitAddAllCommitPush(repoDir, userName, userEmail, remoteUrl, commitMessage); err != nil {
+		return fmt.Errorf("github action push: %w", err)
+	}
+	return nil
 }

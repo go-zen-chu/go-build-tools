@@ -1,4 +1,4 @@
-package gbt
+package util
 
 import (
 	"reflect"
@@ -32,7 +32,7 @@ func Test_splitCmd(t *testing.T) {
 	}
 }
 
-func TestRunCmdWithResult(t *testing.T) {
+func Test_RunCmdWithResult(t *testing.T) {
 	type args struct {
 		cmd string
 	}
@@ -73,7 +73,7 @@ func TestRunCmdWithResult(t *testing.T) {
 	}
 }
 
-func TestRunCmdWithLog(t *testing.T) {
+func Test_RunCmdWithLog(t *testing.T) {
 	type args struct {
 		cmd string
 	}
@@ -106,7 +106,7 @@ func TestRunCmdWithLog(t *testing.T) {
 	}
 }
 
-func TestRunLongRunningCmd(t *testing.T) {
+func Test_RunLongRunningCmd(t *testing.T) {
 	type args struct {
 		cmd string
 	}
@@ -144,8 +144,8 @@ func TestRunLongRunningCmd(t *testing.T) {
 	}
 }
 
-func TestGenerateImageTag(t *testing.T) {
-	t.Run("If can geenerate image tag, if git is installed", func(t *testing.T) {
+func Test_GenerateImageTag(t *testing.T) {
+	t.Run("If can generate image tag, if git is installed", func(t *testing.T) {
 		got, err := GenerateImageTag()
 		if err != nil {
 			t.Errorf("GenerateImageTag() error = %v, wantErr %v", err, false)

@@ -1,8 +1,10 @@
-package gbt
+package docker
 
 import (
 	"fmt"
 	"os"
+
+	"github.com/go-zen-chu/go-build-tools/util"
 )
 
 // DockerLogin logs in to docker.io
@@ -15,7 +17,7 @@ func DockerLogin() error {
 	if pswd == "" {
 		return fmt.Errorf("DOCKER_PASSWORD is not set")
 	}
-	outMsg, errMsg, err := RunLongRunningCmd(fmt.Sprintf("docker login -u %s -p %s", user, pswd))
+	outMsg, errMsg, err := util.RunLongRunningCmd(fmt.Sprintf("docker login -u %s -p %s", user, pswd))
 	if err != nil {
 		return fmt.Errorf("docker login failed: %w\nstdout: %s\nstderr: %s", err, outMsg, errMsg)
 	}
@@ -25,7 +27,7 @@ func DockerLogin() error {
 // DockerBuild builds docker image
 func DockerBuild(registry string, repository string, tag string, dockerFileLocation string) error {
 	buildCmd := fmt.Sprintf("docker build -t %s/%s:%s %s", registry, repository, tag, dockerFileLocation)
-	outMsg, errMsg, err := RunLongRunningCmdWithLog(buildCmd)
+	outMsg, errMsg, err := util.RunLongRunningCmdWithLog(buildCmd)
 	if err != nil {
 		return fmt.Errorf("building docker image (%s): %w\nstdout: %s\nstderr: %s", buildCmd, err, outMsg, errMsg)
 	}
@@ -40,7 +42,7 @@ func DockerBuildLatest(registry string, repository string, dockerFileLocation st
 // DockerPublish pushes image
 func DockerPublish(registry string, repository string, tag string) error {
 	pushCmd := fmt.Sprintf("docker push %s/%s:%s", registry, repository, tag)
-	outMsg, errMsg, err := RunLongRunningCmdWithLog(pushCmd)
+	outMsg, errMsg, err := util.RunLongRunningCmdWithLog(pushCmd)
 	if err != nil {
 		return fmt.Errorf("pushing to docker (%s): %w\nstdout: %s\nstderr: %s", pushCmd, err, outMsg, errMsg)
 	}
@@ -65,7 +67,7 @@ func DockerBuildPublishLatest(registry string, repository string, dockerFileLoca
 
 // DockerBuildPublishGeneratedImageTag builds and pushes image with generated tag
 func DockerBuildPublishGeneratedImageTag(registry string, repository string, dockerFileLocation string) error {
-	tag, err := GenerateImageTag()
+	tag, err := util.GenerateImageTag()
 	if err != nil {
 		return fmt.Errorf("generating image tag: %w", err)
 	}

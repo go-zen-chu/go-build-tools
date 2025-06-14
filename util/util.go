@@ -1,4 +1,4 @@
-package gbt
+package util
 
 import (
 	"bytes"
